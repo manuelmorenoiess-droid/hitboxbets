@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)file:///C:/Users/Manuel/Downloads/index_4.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HitboxBets — La plataforma del FGC</title>
+<link href="./HitboxBets — La plataforma del FGC_files/css2" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--s1:#111;--s2:#181818;--s3:#222;
+  --border:#2a2a2a;--border2:#333;
+  --text:#f0f0f0;--muted:#666;--muted2:#444;
+  --lime:#d4ff00;--lime2:rgba(212,255,0,0.1);
+  --red:#ff3030;--red2:rgba(255,48,48,0.1);
+  --blue:#4da6ff;--blue2:rgba(77,166,255,0.1);
+  --gold:#ffb800;
+  --r:8px;
+  --font:'DM Sans',sans-serif;
+  --head:'Bebas Neue',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font);cursor:pointer}
+input{font-family:var(--font)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--s1)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;height:58px;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;gap:1.5rem}
+.logo{font-family:var(--head);font-size:24px;letter-spacing:1px;color:var(--lime);flex-shrink:0}
+.logo span{color:var(--text)}
+.nav-tabs{display:flex;gap:0;flex:1}
+.nav-tab{padding:0 14px;height:58px;display:flex;align-items:center;font-size:13px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--lime)}
+.nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.nav-user{display:none;align-items:center;gap:10px}
+.nav-coins{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--gold)}
+.btn{padding:7px 16px;border-radius:var(--r);font-size:13px;font-weight:600;border:none;transition:all .15s}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--muted)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text)}
+.btn-lime{background:var(--lime);color:#000}
+.btn-lime:hover{opacity:.88}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+/* ── PAGES ── */
+.page{display:none;min-height:calc(100vh - 58px)}
+.page.active{display:block}
+
+/* ══════════════════════════════
+   LANDING PAGE
+══════════════════════════════ */
+.hero{position:relative;overflow:hidden;padding:5rem 2rem 4rem;text-align:center;border-bottom:1px solid var(--border)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,255,0,0.07) 0%, transparent 70%);pointer-events:none}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red2);border:1px solid rgba(255,48,48,0.2);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;color:var(--red);margin-bottom:1.5rem}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.2s ease infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero-title{font-family:var(--head);font-size:clamp(56px,10vw,110px);line-height:.9;letter-spacing:2px;margin-bottom:1rem}
+.hero-title span{color:var(--lime)}
+.hero-sub{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto 2rem}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-hero{padding:12px 28px;font-size:15px;font-weight:700;border-radius:var(--r);border:none;transition:all .15s}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.feature{background:var(--bg);padding:2rem;text-align:center}
+.feature-icon{font-size:32px;margin-bottom:12px}
+.feature-title{font-family:var(--head);font-size:22px;letter-spacing:1px;margin-bottom:6px;color:var(--lime)}
+.feature-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+.games-strip{padding:2rem;border-bottom:1px solid var(--border)}
+.strip-title{font-family:var(--head);font-size:28px;letter-spacing:1px;margin-bottom:1.2rem;text-align:center}
+.games-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.game-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;cursor:pointer;transition:all .15s}
+.game-card:hover{border-color:var(--lime);background:var(--s3)}
+.game-emoji{font-size:36px;margin-bottom:8px}
+.game-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.game-players{font-size:11px;color:var(--muted)}
+
+.landing-cta{padding:3rem 2rem;text-align:center;background:var(--s1)}
+.cta-title{font-family:var(--head);font-size:42px;letter-spacing:1px;margin-bottom:8px}
+.cta-sub{color:var(--muted);margin-bottom:1.5rem}
+
+/* ══════════════════════════════
+   LIVE / APUESTAS
+══════════════════════════════ */
+.live-layout{display:grid;grid-template-columns:1fr 280px;min-height:calc(100vh - 58px)}
+.live-main{border-right:1px solid var(--border)}
+.live-sidebar{padding:1.2rem}
+
+.section-bar{padding:10px 1.5rem;background:var(--s1);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.live-badge{display:inline-flex;align-items:center;gap:4px;color:var(--red);font-size:11px;font-weight:700}
+
+.match-card{border-bottom:1px solid var(--border);transition:background .12s}
+.match-card:hover{background:var(--s1)}
+.match-header{padding:10px 1.5rem;display:flex;align-items:center;gap:8px}
+.match-event{font-size:11px;color:var(--muted)}
+.match-dot{color:var(--border2)}
+.match-round{font-size:11px;color:var(--muted)}
+.match-status{margin-left:auto;font-size:11px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:4px}
+
+.match-body{padding:8px 1.5rem 0;display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:8px}
+.fighter{display:flex;align-items:center;gap:10px}
+.fighter.right{flex-direction:row-reverse}
+.fighter.right .fighter-info{text-align:right}
+.avatar{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:16px;flex-shrink:0}
+.fighter-name{font-size:15px;font-weight:700}
+.fighter-char{font-size:11px;color:var(--muted)}
+.vs-text{font-family:var(--mono);font-size:11px;color:var(--muted2);text-align:center}
+
+.odds-grid{padding:10px 1.5rem 14px;display:flex;flex-direction:column;gap:5px}
+.odds-row{display:grid;gap:5px;align-items:center}
+.odds-row.two{grid-template-columns:130px 1fr 1fr}
+.odds-row.three{grid-template-columns:130px 1fr 1fr 1fr}
+.odds-label{font-size:11px;color:var(--muted)}
+.odd{display:flex;flex-direction:column;align-items:center;padding:6px 4px;border:1px solid var(--border2);border-radius:6px;background:var(--s2);cursor:pointer;transition:all .12s;gap:1px}
+.odd:hover{border-color:var(--lime);background:var(--lime2)}
+.odd.sel{border-color:var(--lime);background:var(--lime2)}
+.odd.desel{border-color:var(--border);background:var(--bg);opacity:.5}
+.odd-lbl{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.odd-val{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--lime)}
+
+/* BETSLIP */
+.bs-title{font-family:var(--head);font-size:20px;letter-spacing:1px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.bs-cnt{background:var(--lime);color:#000;border-radius:20px;padding:1px 8px;font-size:12px;font-weight:700;font-family:var(--font)}
+.bs-empty{border:1px dashed var(--border2);border-radius:var(--r);padding:2rem;text-align:center;color:var(--muted);font-size:13px}
+.bs-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.bs-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
+.bs-item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px}
+.bs-item-match{font-size:11px;color:var(--muted)}
+.bs-item-remove{background:none;border:none;color:var(--muted2);font-size:14px;padding:0;line-height:1;transition:color .12s}
+.bs-item-remove:hover{color:var(--red)}
+.bs-item-pick{font-size:13px;font-weight:600;display:flex;justify-content:space-between}
+.bs-item-odd{font-family:var(--mono);color:var(--lime)}
+.bs-total{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.bs-total-lbl{font-size:12px;color:var(--muted)}
+.bs-total-val{font-family:var(--mono);font-size:18px;color:var(--lime);font-weight:500}
+.btn-confirm{width:100%;padding:11px;background:var(--lime);color:#000;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s}
+.btn-confirm:hover{opacity:.88}
+.btn-clear{width:100%;padding:7px;background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-top:4px}
+.btn-clear:hover{color:var(--text)}
+
+/* ══════════════════════════════
+   NOTICIAS
+══════════════════════════════ */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.news-card{background:var(--bg);padding:1.5rem;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border)}
+.news-card:hover{background:var(--s1)}
+.news-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;padding:2rem}
+.news-img{width:100%;aspect-ratio:16/9;border-radius:var(--r);margin-bottom:12px;display:flex;align-items:center;justify-content:center;font-size:48px;background:var(--s2)}
+.news-img.featured-img{aspect-ratio:16/9;margin-bottom:0;font-size:80px}
+.news-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.05em;margin-bottom:8px}
+.tag-sf6{background:rgba(255,48,48,.1);color:#ff7070}
+.tag-t8{background:rgba(77,166,255,.1);color:var(--blue)}
+.tag-gg{background:rgba(212,255,0,.08);color:#b8dd00}
+.tag-mk{background:rgba(180,100,255,.1);color:#b47fff}
+.tag-dbfz{background:rgba(255,140,0,.1);color:#ffaa44}
+.tag-fgc{background:rgba(255,255,255,.06);color:var(--muted)}
+.news-title{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:6px}
+.news-card.featured .news-title{font-family:var(--head);font-size:28px;letter-spacing:.5px;line-height:1.1}
+.news-meta{font-size:11px;color:var(--muted)}
+
+/* ══════════════════════════════
+   TORNEOS
+══════════════════════════════ */
+.torneos-list{padding:0}
+.torneo-card{padding:16px 1.5rem;border-bottom:1px solid var(--border);display:grid;grid-template-columns:70px 1fr auto;gap:1rem;align-items:center;cursor:pointer;transition:background .12s}
+.torneo-card:hover{background:var(--s1)}
+.torneo-date-box{text-align:center}
+.torneo-day{font-family:var(--head);font-size:28px;color:var(--lime);line-height:1}
+.torneo-month{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.torneo-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.torneo-detail{font-size:12px;color:var(--muted);margin-bottom:6px}
+.torneo-tags{display:flex;gap:5px;flex-wrap:wrap}
+.torneo-tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.tag-live-now{background:rgba(255,48,48,.12);color:var(--red)}
+.tag-soon{background:rgba(255,255,255,.05);color:var(--muted)}
+.tag-prize{background:var(--lime2);color:var(--lime)}
+.torneo-arrow{font-size:20px;color:var(--muted2)}
+
+/* ══════════════════════════════
+   RANKINGS
+══════════════════════════════ */
+.rankings-layout{display:grid;grid-template-columns:200px 1fr;min-height:calc(100vh - 58px)}
+.rankings-sidebar{border-right:1px solid var(--border);padding:1rem}
+.game-filter{width:100%;padding:9px 12px;border-radius:var(--r);background:transparent;border:1px solid transparent;color:var(--muted);font-size:13px;font-weight:500;text-align:left;cursor:pointer;transition:all .12s;margin-bottom:2px}
+.game-filter:hover{background:var(--s2);color:var(--text)}
+.game-filter.active{background:var(--s2);border-color:var(--border);color:var(--text)}
+.rankings-main{overflow:hidden}
+.rank-table{width:100%}
+.rank-thead{background:var(--s1);border-bottom:1px solid var(--border)}
+.rank-thead th{padding:10px 1rem;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left}
+.rank-row{border-bottom:1px solid var(--border);transition:background .12s;cursor:pointer}
+.rank-row:hover{background:var(--s1)}
+.rank-row td{padding:12px 1rem;font-size:13px;vertical-align:middle}
+.rank-pos{font-family:var(--head);font-size:20px;width:40px}
+.pos-1{color:var(--gold)}
+.pos-2{color:#aaa}
+.pos-3{color:#cd7f32}
+.pos-n{color:var(--muted2)}
+.rank-avatar{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:14px}
+.rank-name{font-weight:700;font-size:14px}
+.rank-country{font-size:11px;color:var(--muted)}
+.rank-char{font-size:12px;color:var(--muted)}
+.rank-wr{font-family:var(--mono);color:var(--lime);font-weight:500}
+.rank-prize{font-family:var(--mono);color:var(--gold)}
+
+/* ══════════════════════════════
+   PREDICCIONES
+══════════════════════════════ */
+.pred-layout{display:grid;grid-template-columns:1fr 300px;min-height:calc(100vh - 58px)}
+.pred-main{border-right:1px solid var(--border)}
+.pred-sidebar{padding:1.2rem}
+
+.coins-banner{margin-bottom:1.2rem;background:linear-gradient(135deg,rgba(255,184,0,.08),rgba(212,255,0,.05));border:1px solid rgba(255,184,0,.2);border-radius:var(--r);padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between}
+.coins-info{font-size:12px;color:var(--muted);margin-top:2px}
+.coins-val{font-family:var(--head);font-size:28px;color:var(--gold);letter-spacing:1px}
+.coins-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+
+.pred-card{border-bottom:1px solid var(--border);padding:1.2rem 1.5rem;transition:background .12s}
+.pred-card:hover{background:var(--s1)}
+.pred-match-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.pred-event{font-size:11px;color:var(--muted);margin-bottom:12px}
+.pred-options{display:flex;flex-direction:column;gap:6px}
+.pred-option{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;transition:all .15s;background:var(--s2)}
+.pred-option:hover{border-color:var(--lime);background:var(--lime2)}
+.pred-option.selected{border-color:var(--lime);background:var(--lime2)}
+.pred-option.selected .pred-opt-odd{color:var(--lime)}
+.pred-opt-name{font-size:13px;font-weight:600}
+.pred-opt-char{font-size:11px;color:var(--muted)}
+.pred-opt-odd{font-family:var(--mono);font-size:16px;color:var(--muted);transition:color .15s}
+
+.pred-stake{margin-top:1rem;display:flex;gap:6px;align-items:center}
+.stake-input{flex:1;padding:8px 12px;background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:14px;font-family:var(--mono)}
+.stake-input:focus{outline:none;border-color:var(--lime)}
+.stake-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.chip{padding:4px 10px;border-radius:20px;background:var(--s2);border:1px solid var(--border2);font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .12s}
+.chip:hover{border-color:var(--lime);color:var(--lime)}
+
+.pred-history{display:flex;flex-direction:column;gap:6px}
+.hist-item{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.hist-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-win{background:#4ade80}
+.dot-loss{background:var(--red)}
+.dot-pend{background:var(--gold)}
+.hist-match{flex:1;font-size:13px;font-weight:600}
+.hist-pick{font-size:11px;color:var(--muted)}
+.hist-result{font-size:13px;font-weight:700}
+.res-win{color:#4ade80}
+.res-loss{color:var(--red)}
+.res-pend{color:var(--gold)}
+
+/* ══════════════════════════════
+   AUTH MODAL
+══════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:12px;padding:2rem;width:100%;max-width:380px;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-title{font-family:var(--head);font-size:28px;letter-spacing:1px;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+.form-group{margin-bottom:12px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.04em}
+.form-input{width:100%;padding:10px 14px;background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-size:14px;transition:border-color .15s}
+.form-input:focus{outline:none;border-color:var(--lime)}
+.form-input::placeholder{color:var(--muted2)}
+.btn-form{width:100%;padding:11px;background:var(--lime);color:#000;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;transition:opacity .15s}
+.btn-form:hover{opacity:.88}
+.modal-switch{text-align:center;margin-top:1rem;font-size:13px;color:var(--muted)}
+.modal-switch a{color:var(--lime);cursor:pointer;font-weight:600}
+.form-coins-note{background:var(--lime2);border:1px solid rgba(212,255,0,.15);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--lime);margin-bottom:12px}
+
+/* ══════════════════════════════
+   TOAST
+══════════════════════════════ */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;z-index:1000;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(74,222,128,.3);color:#4ade80}
+.toast.error{border-color:rgba(255,48,48,.3);color:var(--red)}
+.toast.info{border-color:rgba(212,255,0,.2);color:var(--lime)}
+
+@media(max-width:800px){
+  .live-layout,.pred-layout,.rankings-layout{grid-template-columns:1fr}
+  .live-sidebar,.pred-sidebar,.rankings-sidebar{display:none}
+  .news-grid{grid-template-columns:1fr}
+  .news-card.featured{grid-template-columns:1fr}
+  .games-grid{grid-template-columns:repeat(2,1fr)}
+  .features{grid-template-columns:1fr}
+  .nav-tabs .nav-tab:nth-child(n+4){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">HITBOX<span>BETS</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goTo(&#39;landing&#39;,this)">Inicio</button>
+    <button class="nav-tab" onclick="goTo(&#39;live&#39;,this)">En Vivo</button>
+    <button class="nav-tab" onclick="goTo(&#39;noticias&#39;,this)">Noticias</button>
+    <button class="nav-tab" onclick="goTo(&#39;torneos&#39;,this)">Torneos</button>
+    <button class="nav-tab" onclick="goTo(&#39;rankings&#39;,this)">Rankings</button>
+    <button class="nav-tab" onclick="goTo(&#39;predicciones&#39;,this)">Predicciones</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user" id="navUser">
+      <div class="nav-coins">🪙 <span id="navCoins">1000</span></div>
+      <span id="navUsername" style="font-size:13px;font-weight:600"></span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button>
+    </div>
+    <div id="navAuth" style="display:flex;gap:8px">
+      <button class="btn btn-ghost btn-sm" onclick="openModal(&#39;login&#39;)">Entrar</button>
+      <button class="btn btn-lime btn-sm" onclick="openModal(&#39;register&#39;)">Registrarse</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ LANDING ══ -->
+<div class="page active" id="page-landing">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-tag"><span class="live-dot"></span>EVO 2025 — En vivo ahora</div>
+    <h1 class="hero-title">LA PLATAFORMA<br><span>DEL FGC</span></h1>
+    <p class="hero-sub">Noticias, torneos, rankings y predicciones con monedas virtuales. Todo sobre fighting games en un solo lugar.</p>
+    <div class="hero-btns">
+      <button class="btn-hero btn-lime" onclick="openModal(&#39;register&#39;)">Empieza gratis →</button>
+      <button class="btn-hero" style="background:var(--s2);border:1px solid var(--border2);color:var(--text)" onclick="goTo(&#39;live&#39;,null)">Ver en vivo</button>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature"><div class="feature-icon">🎮</div><div class="feature-title">Torneos FGC</div><div class="feature-desc">EVO, Capcom Cup, Tekken World Tour y más. Calendario completo con toda la información.</div></div>
+    <div class="feature"><div class="feature-icon">🪙</div><div class="feature-title">Predicciones</div><div class="feature-desc">Predice resultados con monedas virtuales. Sin dinero real. Sube en el ranking demostrando tu conocimiento.</div></div>
+    <div class="feature"><div class="feature-icon">📊</div><div class="feature-title">Rankings</div><div class="feature-desc">Rankings actualizados de los mejores jugadores de SF6, Tekken 8, MK1 y Guilty Gear Strive.</div></div>
+  </div>
+
+  <div class="games-strip">
+    <div class="strip-title">LOS JUEGOS</div>
+    <div class="games-grid">
+      <div class="game-card" onclick="filterRanking(&#39;SF6&#39;)"><div class="game-emoji">🥊</div><div class="game-name">Street Fighter 6</div><div class="game-players">4.228 en EVO 2025</div></div>
+      <div class="game-card" onclick="filterRanking(&#39;T8&#39;)"><div class="game-emoji">👊</div><div class="game-name">Tekken 8</div><div class="game-players">2.100 en TWT Finals</div></div>
+      <div class="game-card" onclick="filterRanking(&#39;GG&#39;)"><div class="game-emoji">⚔️</div><div class="game-name">Guilty Gear Strive</div><div class="game-players">890 en ARC World Tour</div></div>
+      <div class="game-card" onclick="filterRanking(&#39;MK1&#39;)"><div class="game-emoji">💀</div><div class="game-name">Mortal Kombat 1</div><div class="game-players">640 en Combo Breaker</div></div>
+    </div>
+  </div>
+
+  <div class="landing-cta">
+    <div class="cta-title">¿LISTO PARA DEMOSTRAR<br>QUE SABES MÁS?</div>
+    <p class="cta-sub">Regístrate gratis y consigue 1.000 monedas de bienvenida para empezar a predecir.</p>
+    <button class="btn btn-lime" style="padding:12px 32px;font-size:15px;font-weight:700" onclick="openModal(&#39;register&#39;)">Crear cuenta gratis</button>
+  </div>
+</div>
+
+<!-- ══ EN VIVO ══ -->
+<div class="page" id="page-live">
+  <div class="live-layout">
+    <div class="live-main">
+      <div class="section-bar"><span class="live-badge"><span class="live-dot"></span>En vivo</span> EVO 2025 · Street Fighter 6 · Top 8 · Las Vegas</div>
+
+      <!-- MATCH 1 -->
+      <div class="match-card">
+        <div class="match-header">
+          <span class="match-event">EVO 2025 · SF6</span><span class="match-dot">·</span>
+          <span class="match-round">Semifinal Grand Bracket · Bo5</span>
+          <span class="match-status"><span class="live-dot"></span>Set 3</span>
+        </div>
+        <div class="match-body">
+          <div class="fighter"><div class="avatar" style="background:rgba(77,166,255,.15);color:var(--blue)">PK</div><div class="fighter-info"><div class="fighter-name">Punk</div><div class="fighter-char">Luke · 🇺🇸</div></div></div>
+          <div class="vs-text">VS</div>
+          <div class="fighter right"><div class="avatar" style="background:rgba(255,48,48,.12);color:var(--red)">MR</div><div class="fighter-info"><div class="fighter-name">MenaRD</div><div class="fighter-char">Blanka · 🇩🇴</div></div></div>
+        </div>
+        <div class="odds-grid">
+          <div class="odds-row two"><span class="odds-label">Ganador</span><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD&#39;,&#39;Punk gana&#39;,1.85)"><span class="odd-lbl">Punk</span><span class="odd-val">1.85</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD&#39;,&#39;MenaRD gana&#39;,1.95)"><span class="odd-lbl">MenaRD</span><span class="odd-val">1.95</span></button></div>
+          <div class="odds-row two"><span class="odds-label">Rondas O/U 3.5</span><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·R&#39;,&#39;Más de 3.5&#39;,1.72)"><span class="odd-lbl">+3.5</span><span class="odd-val">1.72</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·R&#39;,&#39;Menos de 3.5&#39;,2.10)"><span class="odd-lbl">-3.5</span><span class="odd-val">2.10</span></button></div>
+          <div class="odds-row two"><span class="odds-label">Perfect Round</span><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·P&#39;,&#39;Sí habrá&#39;,3.40)"><span class="odd-lbl">Sí</span><span class="odd-val">3.40</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·P&#39;,&#39;No habrá&#39;,1.28)"><span class="odd-lbl">No</span><span class="odd-val">1.28</span></button></div>
+          <div class="odds-row three"><span class="odds-label">Primer Stun</span><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·S&#39;,&#39;Punk&#39;,1.80)"><span class="odd-lbl">Punk</span><span class="odd-val">1.80</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·S&#39;,&#39;MenaRD&#39;,2.00)"><span class="odd-lbl">MenaRD</span><span class="odd-val">2.00</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·S&#39;,&#39;Ninguno&#39;,4.50)"><span class="odd-lbl">Ninguno</span><span class="odd-val">4.50</span></button></div>
+          <div class="odds-row two"><span class="odds-label">Drive Impact R1</span><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·D&#39;,&#39;Sí&#39;,1.45)"><span class="odd-lbl">Sí</span><span class="odd-val">1.45</span></button><button class="odd" onclick="betClick(this,&#39;Punk vs MenaRD·D&#39;,&#39;No&#39;,2.70)"><span class="odd-lbl">No</span><span class="odd-val">2.70</span></button></div>
+        </div>
+      </div>
+
+      <!-- MATCH 2 -->
+      <div class="match-card">
+        <div class="match-header">
+          <span class="match-event">EVO 2025 · SF6</span><span class="match-dot">·</span>
+          <span class="match-round">Semifinal Losers · Bo5</span>
+          <span class="match-status"><span class="live-dot"></span>Set 1</span>
+        </div>
+        <div class="match-body">
+          <div class="fighter"><div class="avatar" style="background:rgba(212,255,0,.1);color:var(--lime)">TK</div><div class="fighter-info"><div class="fighter-name">Tokido</div><div class="fighter-char">Akuma · 🇯🇵</div></div></div>
+          <div class="vs-text">VS</div>
+          <div class="fighter right"><div class="avatar" style="background:rgba(255,184,0,.1);color:var(--gold)">ND</div><div class="fighter-info"><div class="fighter-name">NuckleDu</div><div class="fighter-char">Guile · 🇺🇸</div></div></div>
+        </div>
+        <div class="odds-grid">
+          <div class="odds-row two"><span class="odds-label">Ganador</span><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu&#39;,&#39;Tokido gana&#39;,1.65)"><span class="odd-lbl">Tokido</span><span class="odd-val">1.65</span></button><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu&#39;,&#39;NuckleDu gana&#39;,2.25)"><span class="odd-lbl">NuckleDu</span><span class="odd-val">2.25</span></button></div>
+          <div class="odds-row two"><span class="odds-label">Rondas O/U 3.5</span><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu·R&#39;,&#39;Más de 3.5&#39;,1.90)"><span class="odd-lbl">+3.5</span><span class="odd-val">1.90</span></button><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu·R&#39;,&#39;Menos de 3.5&#39;,1.90)"><span class="odd-lbl">-3.5</span><span class="odd-val">1.90</span></button></div>
+          <div class="odds-row two"><span class="odds-label">Perfect Round</span><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu·P&#39;,&#39;Sí habrá&#39;,3.80)"><span class="odd-lbl">Sí</span><span class="odd-val">3.80</span></button><button class="odd" onclick="betClick(this,&#39;Tokido vs NuckleDu·P&#39;,&#39;No habrá&#39;,1.22)"><span class="odd-lbl">No</span><span class="odd-val">1.22</span></button></div>
+        </div>
+      </div>
+
+      <!-- GANADOR TORNEO -->
+      <div class="section-bar">🏆 Ganador del torneo — EVO 2025 SF6</div>
+      <div class="match-card">
+        <div style="padding:12px 1.5rem 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;Punk&#39;,2.10)"><span class="odd-lbl">Punk 🇺🇸</span><span class="odd-val">2.10</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;Tokido&#39;,3.20)"><span class="odd-lbl">Tokido 🇯🇵</span><span class="odd-val">3.20</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;MenaRD&#39;,4.50)"><span class="odd-lbl">MenaRD 🇩🇴</span><span class="odd-val">4.50</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;NuckleDu&#39;,5.00)"><span class="odd-lbl">NuckleDu 🇺🇸</span><span class="odd-val">5.00</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;Caba&#39;,6.00)"><span class="odd-lbl">Caba 🇨🇺</span><span class="odd-val">6.00</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;iDom&#39;,7.50)"><span class="odd-lbl">iDom 🇺🇸</span><span class="odd-val">7.50</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;Xiao Hai&#39;,9.00)"><span class="odd-lbl">Xiao Hai 🇨🇳</span><span class="odd-val">9.00</span></button>
+          <button class="odd" onclick="betClick(this,&#39;Ganador EVO&#39;,&#39;Otro&#39;,12.00)"><span class="odd-lbl">Otro</span><span class="odd-val">12.00</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BETSLIP -->
+    <div class="live-sidebar">
+      <div style="position:sticky;top:78px">
+        <div class="bs-title">Mi apuesta <span class="bs-cnt" id="bsCnt">0</span></div>
+        <div id="bsEmpty" class="bs-empty">Selecciona una cuota para añadirla.<br>Haz clic de nuevo para quitarla.</div>
+        <div id="bsList" class="bs-list"></div>
+        <div id="bsFooter" style="display:none">
+          <div class="bs-total"><span class="bs-total-lbl">Cuota combinada</span><span class="bs-total-val" id="bsTotal">1.00</span></div>
+          <button class="btn-confirm" onclick="confirmBet()">Confirmar apuesta</button>
+          <button class="btn-clear" onclick="clearAll()">Limpiar todo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NOTICIAS ══ -->
+<div class="page" id="page-noticias">
+  <div class="section-bar">Últimas noticias del FGC</div>
+  <div class="news-grid">
+    <div class="news-card featured">
+      <div class="news-img featured-img">🥊</div>
+      <div>
+        <span class="news-tag tag-sf6">Street Fighter 6</span>
+        <div class="news-title">Punk arrasa en EVO 2025 y se convierte en el favorito para el Capcom Cup XII</div>
+        <div class="news-meta" style="margin-top:8px;line-height:1.7;color:#888;font-size:12px">El jugador americano Victor "Punk" Woodley ha dominado el torneo más importante del año con una actuación histórica usando a Luke. Su win rate del 94% en Top 8 lo consolida como el mejor jugador del mundo de SF6 en 2025.</div>
+        <div class="news-meta" style="margin-top:10px">Hace 2 horas · EVO 2025</div>
+      </div>
+    </div>
+    <div class="news-card"><div class="news-img">👊</div><span class="news-tag tag-t8">Tekken 8</span><div class="news-title">Tekken World Tour Finals llega a Barcelona en junio</div><div class="news-meta">Hace 5 horas · TWT 2025</div></div>
+    <div class="news-card"><div class="news-img">⚔️</div><span class="news-tag tag-gg">Guilty Gear</span><div class="news-title">ARC World Tour anuncia el mayor prize pool de su historia: $50.000</div><div class="news-meta">Hace 8 horas · ARC 2025</div></div>
+    <div class="news-card"><div class="news-img">💀</div><span class="news-tag tag-mk">Mortal Kombat 1</span><div class="news-title">Nuevo DLC de MK1 filtraciones apuntan a un personaje sorpresa para julio</div><div class="news-meta">Hace 12 horas · MK1</div></div>
+    <div class="news-card"><div class="news-img">🏆</div><span class="news-tag tag-fgc">FGC</span><div class="news-title">EVO Japan 2026 confirma fechas y sede: Tokio en marzo</div><div class="news-meta">Hace 1 día · EVO Japan</div></div>
+    <div class="news-card"><div class="news-img">🎮</div><span class="news-tag tag-sf6">Street Fighter 6</span><div class="news-title">Capcom anuncia el balance patch de verano con cambios a 12 personajes</div><div class="news-meta">Hace 2 días · SF6</div></div>
+  </div>
+</div>
+
+<!-- ══ TORNEOS ══ -->
+<div class="page" id="page-torneos">
+  <div class="section-bar"><span class="live-badge"><span class="live-dot"></span>En vivo</span></div>
+  <div class="torneos-list">
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">13</div><div class="torneo-month">Jul</div></div><div><div class="torneo-name">EVO 2025 — Street Fighter 6</div><div class="torneo-detail">📍 Mandalay Bay · Las Vegas, EE.UU. · 4.228 participantes</div><div class="torneo-tags"><span class="torneo-tag tag-sf6">SF6</span><span class="torneo-tag tag-prize">$30.000</span><span class="torneo-tag tag-live-now">● En vivo · Top 8</span></div></div><span class="torneo-arrow">›</span></div>
+  </div>
+  <div class="section-bar">Próximos torneos</div>
+  <div class="torneos-list">
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">14</div><div class="torneo-month">Jun</div></div><div><div class="torneo-name">Tekken World Tour Finals</div><div class="torneo-detail">📍 Palau Sant Jordi · Barcelona, España · 16 jugadores</div><div class="torneo-tags"><span class="torneo-tag tag-t8">Tekken 8</span><span class="torneo-tag tag-prize">$20.000</span></div></div><span class="torneo-arrow">›</span></div>
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">22</div><div class="torneo-month">Jun</div></div><div><div class="torneo-name">Combo Breaker 2025</div><div class="torneo-detail">📍 Stephens Convention Center · Chicago, EE.UU. · 64 jugadores</div><div class="torneo-tags"><span class="torneo-tag tag-mk">MK1</span><span class="torneo-tag tag-prize">$8.000</span></div></div><span class="torneo-arrow">›</span></div>
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">28</div><div class="torneo-month">Jun</div></div><div><div class="torneo-name">CEO 2025 — Community Effort Orlando</div><div class="torneo-detail">📍 Wyndham Resort · Orlando, EE.UU. · 256 jugadores</div><div class="torneo-tags"><span class="torneo-tag tag-sf6">SF6</span><span class="torneo-tag tag-prize">$5.000</span></div></div><span class="torneo-arrow">›</span></div>
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">5</div><div class="torneo-month">Jul</div></div><div><div class="torneo-name">EVO France 2025</div><div class="torneo-detail">📍 Paris Expo · París, Francia · 128 jugadores</div><div class="torneo-tags"><span class="torneo-tag tag-dbfz">DBFZ</span><span class="torneo-tag tag-prize">€2.800</span></div></div><span class="torneo-arrow">›</span></div>
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">Nov</div><div class="torneo-month">2025</div></div><div><div class="torneo-name">Capcom Cup XII</div><div class="torneo-detail">📍 Las Vegas, EE.UU. · Solo clasificados · 48 jugadores</div><div class="torneo-tags"><span class="torneo-tag tag-sf6">SF6</span><span class="torneo-tag tag-prize">$1.000.000</span><span class="torneo-tag tag-soon">Próximamente</span></div></div><span class="torneo-arrow">›</span></div>
+    <div class="torneo-card"><div class="torneo-date-box"><div class="torneo-day">Dic</div><div class="torneo-month">2025</div></div><div><div class="torneo-name">ARC World Tour Finals 2025</div><div class="torneo-detail">📍 Tokio, Japón · 32 jugadores · Sede por confirmar</div><div class="torneo-tags"><span class="torneo-tag tag-gg">Guilty Gear</span><span class="torneo-tag tag-prize">$50.000</span><span class="torneo-tag tag-soon">Próximamente</span></div></div><span class="torneo-arrow">›</span></div>
+  </div>
+</div>
+
+<!-- ══ RANKINGS ══ -->
+<div class="page" id="page-rankings">
+  <div class="rankings-layout">
+    <div class="rankings-sidebar">
+      <div class="section-bar" style="padding:10px 12px;margin-bottom:8px">Juego</div>
+      <button class="game-filter active" onclick="filterRanking(&#39;SF6&#39;,this)">🥊 Street Fighter 6</button>
+      <button class="game-filter" onclick="filterRanking(&#39;T8&#39;,this)">👊 Tekken 8</button>
+      <button class="game-filter" onclick="filterRanking(&#39;GG&#39;,this)">⚔️ Guilty Gear Strive</button>
+      <button class="game-filter" onclick="filterRanking(&#39;MK1&#39;,this)">💀 Mortal Kombat 1</button>
+    </div>
+    <div class="rankings-main">
+      <div class="section-bar" id="rankTitle">Street Fighter 6 — Ranking Mundial 2025</div>
+      <table class="rank-table">
+        <thead class="rank-thead"><tr><th>#</th><th colspan="2">Jugador</th><th>País</th><th>Main</th><th>Win Rate</th><th>Ganancias 2025</th></tr></thead>
+        <tbody id="rankBody">
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-1">1</span></td>
+      <td><div class="rank-avatar" style="background:rgba(77,166,255,.15);color:var(--blue)">PK</div></td>
+      <td><div class="rank-name">Punk</div><div class="rank-country">🇺🇸 EE.UU.</div></td>
+      <td></td>
+      <td class="rank-char">Luke</td>
+      <td class="rank-wr">74%</td>
+      <td class="rank-prize">$48.200</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-2">2</span></td>
+      <td><div class="rank-avatar" style="background:rgba(212,255,0,.1);color:var(--lime)">TK</div></td>
+      <td><div class="rank-name">Tokido</div><div class="rank-country">🇯🇵 Japón</div></td>
+      <td></td>
+      <td class="rank-char">Akuma</td>
+      <td class="rank-wr">71%</td>
+      <td class="rank-prize">$32.100</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-3">3</span></td>
+      <td><div class="rank-avatar" style="background:rgba(255,48,48,.12);color:var(--red)">MR</div></td>
+      <td><div class="rank-name">MenaRD</div><div class="rank-country">🇩🇴 Rep. Dom.</div></td>
+      <td></td>
+      <td class="rank-char">Blanka</td>
+      <td class="rank-wr">68%</td>
+      <td class="rank-prize">$28.500</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-n">4</span></td>
+      <td><div class="rank-avatar" style="background:rgba(180,100,255,.12);color:#b47fff">CB</div></td>
+      <td><div class="rank-name">Caba</div><div class="rank-country">🇨🇺 Cuba</div></td>
+      <td></td>
+      <td class="rank-char">JP</td>
+      <td class="rank-wr">66%</td>
+      <td class="rank-prize">$22.000</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-n">5</span></td>
+      <td><div class="rank-avatar" style="background:rgba(255,184,0,.12);color:var(--gold)">ND</div></td>
+      <td><div class="rank-name">NuckleDu</div><div class="rank-country">🇺🇸 EE.UU.</div></td>
+      <td></td>
+      <td class="rank-char">Guile</td>
+      <td class="rank-wr">65%</td>
+      <td class="rank-prize">$19.800</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-n">6</span></td>
+      <td><div class="rank-avatar" style="background:rgba(0,210,150,.12);color:#00d296">ID</div></td>
+      <td><div class="rank-name">iDom</div><div class="rank-country">🇺🇸 EE.UU.</div></td>
+      <td></td>
+      <td class="rank-char">Cammy</td>
+      <td class="rank-wr">63%</td>
+      <td class="rank-prize">$17.200</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-n">7</span></td>
+      <td><div class="rank-avatar" style="background:rgba(255,140,0,.12);color:#ffaa44">XH</div></td>
+      <td><div class="rank-name">Xiao Hai</div><div class="rank-country">🇨🇳 China</div></td>
+      <td></td>
+      <td class="rank-char">Luke</td>
+      <td class="rank-wr">61%</td>
+      <td class="rank-prize">$14.500</td>
+    </tr>
+    <tr class="rank-row">
+      <td><span class="rank-pos pos-n">8</span></td>
+      <td><div class="rank-avatar" style="background:rgba(255,255,255,.06);color:var(--muted)">JW</div></td>
+      <td><div class="rank-name">Justin Wong</div><div class="rank-country">🇺🇸 EE.UU.</div></td>
+      <td></td>
+      <td class="rank-char">Kimberly</td>
+      <td class="rank-wr">59%</td>
+      <td class="rank-prize">$11.000</td>
+    </tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PREDICCIONES ══ -->
+<div class="page" id="page-predicciones">
+  <div class="pred-layout">
+    <div class="pred-main">
+      <div class="section-bar">Sistema de predicciones — Monedas virtuales</div>
+
+      <div class="pred-card">
+        <div class="pred-match-title">Punk vs. MenaRD — ¿Quién gana?</div>
+        <div class="pred-event">EVO 2025 · SF6 · Semifinal Grand Bracket · En vivo</div>
+        <div class="pred-options">
+          <div class="pred-option" onclick="selectPred(this,&#39;m1&#39;)"><div><div class="pred-opt-name">Punk 🇺🇸</div><div class="pred-opt-char">Luke</div></div><span class="pred-opt-odd">×1.85</span></div>
+          <div class="pred-option" onclick="selectPred(this,&#39;m1&#39;)"><div><div class="pred-opt-name">MenaRD 🇩🇴</div><div class="pred-opt-char">Blanka</div></div><span class="pred-opt-odd">×1.95</span></div>
+        </div>
+        <div class="pred-stake">
+          <input class="stake-input" type="number" id="stake-m1" placeholder="Monedas a apostar" min="10" max="500">
+          <button class="btn btn-lime btn-sm" onclick="placePred(&#39;m1&#39;,&#39;Punk vs MenaRD&#39;)">Predecir</button>
+        </div>
+        <div class="stake-chips">
+          <button class="chip" onclick="setStake(&#39;stake-m1&#39;,50)">50</button>
+          <button class="chip" onclick="setStake(&#39;stake-m1&#39;,100)">100</button>
+          <button class="chip" onclick="setStake(&#39;stake-m1&#39;,200)">200</button>
+          <button class="chip" onclick="setStake(&#39;stake-m1&#39;,500)">500</button>
+        </div>
+      </div>
+
+      <div class="pred-card">
+        <div class="pred-match-title">Tokido vs. NuckleDu — ¿Quién avanza?</div>
+        <div class="pred-event">EVO 2025 · SF6 · Semifinal Losers · En vivo</div>
+        <div class="pred-options">
+          <div class="pred-option" onclick="selectPred(this,&#39;m2&#39;)"><div><div class="pred-opt-name">Tokido 🇯🇵</div><div class="pred-opt-char">Akuma</div></div><span class="pred-opt-odd">×1.65</span></div>
+          <div class="pred-option" onclick="selectPred(this,&#39;m2&#39;)"><div><div class="pred-opt-name">NuckleDu 🇺🇸</div><div class="pred-opt-char">Guile</div></div><span class="pred-opt-odd">×2.25</span></div>
+        </div>
+        <div class="pred-stake">
+          <input class="stake-input" type="number" id="stake-m2" placeholder="Monedas a apostar" min="10" max="500">
+          <button class="btn btn-lime btn-sm" onclick="placePred(&#39;m2&#39;,&#39;Tokido vs NuckleDu&#39;)">Predecir</button>
+        </div>
+        <div class="stake-chips">
+          <button class="chip" onclick="setStake(&#39;stake-m2&#39;,50)">50</button>
+          <button class="chip" onclick="setStake(&#39;stake-m2&#39;,100)">100</button>
+          <button class="chip" onclick="setStake(&#39;stake-m2&#39;,200)">200</button>
+          <button class="chip" onclick="setStake(&#39;stake-m2&#39;,500)">500</button>
+        </div>
+      </div>
+
+      <div class="pred-card">
+        <div class="pred-match-title">¿Quién gana EVO 2025 SF6?</div>
+        <div class="pred-event">EVO 2025 · SF6 · Apuesta especial torneo completo</div>
+        <div class="pred-options">
+          <div class="pred-option" onclick="selectPred(this,&#39;m3&#39;)"><div><div class="pred-opt-name">Punk 🇺🇸</div><div class="pred-opt-char">Luke</div></div><span class="pred-opt-odd">×2.10</span></div>
+          <div class="pred-option" onclick="selectPred(this,&#39;m3&#39;)"><div><div class="pred-opt-name">Tokido 🇯🇵</div><div class="pred-opt-char">Akuma</div></div><span class="pred-opt-odd">×3.20</span></div>
+          <div class="pred-option" onclick="selectPred(this,&#39;m3&#39;)"><div><div class="pred-opt-name">MenaRD 🇩🇴</div><div class="pred-opt-char">Blanka</div></div><span class="pred-opt-odd">×4.50</span></div>
+          <div class="pred-option" onclick="selectPred(this,&#39;m3&#39;)"><div><div class="pred-opt-name">NuckleDu 🇺🇸</div><div class="pred-opt-char">Guile</div></div><span class="pred-opt-odd">×5.00</span></div>
+        </div>
+        <div class="pred-stake">
+          <input class="stake-input" type="number" id="stake-m3" placeholder="Monedas a apostar" min="10" max="500">
+          <button class="btn btn-lime btn-sm" onclick="placePred(&#39;m3&#39;,&#39;Ganador EVO&#39;)">Predecir</button>
+        </div>
+        <div class="stake-chips">
+          <button class="chip" onclick="setStake(&#39;stake-m3&#39;,50)">50</button>
+          <button class="chip" onclick="setStake(&#39;stake-m3&#39;,100)">100</button>
+          <button class="chip" onclick="setStake(&#39;stake-m3&#39;,200)">200</button>
+          <button class="chip" onclick="setStake(&#39;stake-m3&#39;,500)">500</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pred-sidebar">
+      <div style="position:sticky;top:78px">
+        <div class="coins-banner">
+          <div><div class="coins-label">Tus monedas</div><div class="coins-val">🪙 <span id="predCoins">1000</span></div><div class="coins-info">Regístrate y consigue 1.000 gratis</div></div>
+        </div>
+        <div class="bs-title" style="font-size:16px">Mis predicciones</div>
+        <div id="predHistory" class="pred-history">
+          <div class="hist-item"><span class="hist-dot dot-win"></span><div><div class="hist-match">Punk vs iDom</div><div class="hist-pick">Punk gana · EVO QF</div></div><span class="hist-result res-win">+172🪙</span></div>
+          <div class="hist-item"><span class="hist-dot dot-win"></span><div><div class="hist-match">Perfect Round</div><div class="hist-pick">Sí · EVO QF</div></div><span class="hist-result res-win">+340🪙</span></div>
+          <div class="hist-item"><span class="hist-dot dot-loss"></span><div><div class="hist-match">MenaRD personaje</div><div class="hist-pick">Blanka · EVO R32</div></div><span class="hist-result res-loss">-100🪙</span></div>
+          <div class="hist-item"><span class="hist-dot dot-pend"></span><div><div class="hist-match">Punk vs MenaRD</div><div class="hist-pick">Punk gana · Semifinal</div></div><span class="hist-result res-pend">Pendiente</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalLogin">
+      <div class="modal-title">BIENVENIDO</div>
+      <div class="modal-sub">Inicia sesión en tu cuenta</div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="loginEmail" placeholder="tu@email.com"></div>
+      <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" type="password" id="loginPass" placeholder="••••••••"></div>
+      <button class="btn-form" onclick="doLogin()">Entrar</button>
+      <div class="modal-switch">¿No tienes cuenta? <a onclick="openModal(&#39;register&#39;)">Regístrate gratis</a></div>
+    </div>
+    <div id="modalRegister" style="display:none">
+      <div class="modal-title">ÚNETE</div>
+      <div class="modal-sub">Crea tu cuenta gratis</div>
+      <div class="form-coins-note">🪙 Recibirás 1.000 monedas de bienvenida al registrarte</div>
+      <div class="form-group"><label class="form-label">Nombre de usuario</label><input class="form-input" type="text" id="regUser" placeholder="FGCmaster99"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="regEmail" placeholder="tu@email.com"></div>
+      <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" type="password" id="regPass" placeholder="Mínimo 6 caracteres"></div>
+      <button class="btn-form" onclick="doRegister()">Crear cuenta gratis</button>
+      <div class="modal-switch">¿Ya tienes cuenta? <a onclick="openModal(&#39;login&#39;)">Inicia sesión</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── ESTADO ──
+let user = null;
+let bets = {};
+let selectedPreds = {};
+
+// ── RANKINGS DATA ──
+const rankData = {
+  SF6: [
+    {pos:1,av:'PK',avc:'rgba(77,166,255,.15)',avt:'var(--blue)',name:'Punk',country:'🇺🇸 EE.UU.',char:'Luke',wr:'74%',prize:'$48.200'},
+    {pos:2,av:'TK',avc:'rgba(212,255,0,.1)',avt:'var(--lime)',name:'Tokido',country:'🇯🇵 Japón',char:'Akuma',wr:'71%',prize:'$32.100'},
+    {pos:3,av:'MR',avc:'rgba(255,48,48,.12)',avt:'var(--red)',name:'MenaRD',country:'🇩🇴 Rep. Dom.',char:'Blanka',wr:'68%',prize:'$28.500'},
+    {pos:4,av:'CB',avc:'rgba(180,100,255,.12)',avt:'#b47fff',name:'Caba',country:'🇨🇺 Cuba',char:'JP',wr:'66%',prize:'$22.000'},
+    {pos:5,av:'ND',avc:'rgba(255,184,0,.12)',avt:'var(--gold)',name:'NuckleDu',country:'🇺🇸 EE.UU.',char:'Guile',wr:'65%',prize:'$19.800'},
+    {pos:6,av:'ID',avc:'rgba(0,210,150,.12)',avt:'#00d296',name:'iDom',country:'🇺🇸 EE.UU.',char:'Cammy',wr:'63%',prize:'$17.200'},
+    {pos:7,av:'XH',avc:'rgba(255,140,0,.12)',avt:'#ffaa44',name:'Xiao Hai',country:'🇨🇳 China',char:'Luke',wr:'61%',prize:'$14.500'},
+    {pos:8,av:'JW',avc:'rgba(255,255,255,.06)',avt:'var(--muted)',name:'Justin Wong',country:'🇺🇸 EE.UU.',char:'Kimberly',wr:'59%',prize:'$11.000'},
+  ],
+  T8: [
+    {pos:1,av:'JD',avc:'rgba(77,166,255,.15)',avt:'var(--blue)',name:'Jdcr',country:'🇰🇷 Corea',char:'Dragunov',wr:'76%',prize:'$38.000'},
+    {pos:2,av:'AK',avc:'rgba(212,255,0,.1)',avt:'var(--lime)',name:'Arslan Ash',country:'🇵🇰 Pakistán',char:'Zafina',wr:'72%',prize:'$29.500'},
+    {pos:3,av:'KN',avc:'rgba(255,48,48,.12)',avt:'var(--red)',name:'Knee',country:'🇰🇷 Corea',char:'Bryan',wr:'70%',prize:'$24.000'},
+    {pos:4,av:'AW',avc:'rgba(255,184,0,.12)',avt:'var(--gold)',name:'Anakin',country:'🇺🇸 EE.UU.',char:'Jack-8',wr:'67%',prize:'$18.500'},
+    {pos:5,av:'NR',avc:'rgba(180,100,255,.12)',avt:'#b47fff',name:'Nobi',country:'🇯🇵 Japón',char:'Dragunov',wr:'65%',prize:'$15.000'},
+  ],
+  GG: [
+    {pos:1,av:'NU',avc:'rgba(212,255,0,.1)',avt:'var(--lime)',name:'Nagestu',country:'🇯🇵 Japón',char:'Giovanna',wr:'78%',prize:'$22.000'},
+    {pos:2,av:'CR',avc:'rgba(77,166,255,.15)',avt:'var(--blue)',name:'Crest',country:'🇯🇵 Japón',char:'Sol Badguy',wr:'74%',prize:'$16.000'},
+    {pos:3,av:'ZL',avc:'rgba(255,48,48,.12)',avt:'var(--red)',name:'Zando',country:'🇺🇸 EE.UU.',char:'Ky Kiske',wr:'69%',prize:'$12.000'},
+  ],
+  MK1: [
+    {pos:1,av:'SN',avc:'rgba(180,100,255,.12)',avt:'#b47fff',name:'SonicFox',country:'🇺🇸 EE.UU.',char:'Ermac',wr:'80%',prize:'$18.000'},
+    {pos:2,av:'KL',avc:'rgba(77,166,255,.15)',avt:'var(--blue)',name:'KingGambler',country:'🇺🇸 EE.UU.',char:'Liu Kang',wr:'73%',prize:'$12.500'},
+    {pos:3,av:'BC',avc:'rgba(255,48,48,.12)',avt:'var(--red)',name:'Biohazard',country:'🇺🇸 EE.UU.',char:'Baraka',wr:'68%',prize:'$9.000'},
+  ]
+};
+
+function renderRankings(game){
+  const data = rankData[game] || [];
+  const posClass = ['','pos-1','pos-2','pos-3'];
+  document.getElementById('rankBody').innerHTML = data.map(p=>`
+    <tr class="rank-row">
+      <td><span class="rank-pos ${posClass[p.pos]||'pos-n'}">${p.pos}</span></td>
+      <td><div class="rank-avatar" style="background:${p.avc};color:${p.avt}">${p.av}</div></td>
+      <td><div class="rank-name">${p.name}</div><div class="rank-country">${p.country}</div></td>
+      <td></td>
+      <td class="rank-char">${p.char}</td>
+      <td class="rank-wr">${p.wr}</td>
+      <td class="rank-prize">${p.prize}</td>
+    </tr>`).join('');
+}
+renderRankings('SF6');
+
+function filterRanking(game, btn){
+  document.querySelectorAll('.game-filter').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const titles={SF6:'Street Fighter 6',T8:'Tekken 8',GG:'Guilty Gear Strive',MK1:'Mortal Kombat 1'};
+  const el=document.getElementById('rankTitle');
+  if(el) el.textContent=(titles[game]||game)+' — Ranking Mundial 2025';
+  renderRankings(game);
+  goTo('rankings',null);
+}
+
+// ── NAVEGACIÓN ──
+function goTo(page, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ── BETSLIP ──
+function betClick(btn, market, pick, odd){
+  const row = btn.closest('.odds-row') || btn.closest('div[style*="grid"]');
+  const siblings = row ? row.querySelectorAll('.odd') : [];
+
+  if(btn.classList.contains('sel')){
+    btn.classList.remove('sel');
+    siblings.forEach(b=>b.classList.remove('desel'));
+    delete bets[market];
+  } else {
+    siblings.forEach(b=>{b.classList.remove('sel');b.classList.add('desel')});
+    btn.classList.add('sel');
+    btn.classList.remove('desel');
+    bets[market]={pick,odd};
+  }
+  renderBetslip();
+}
+
+function renderBetslip(){
+  const entries=Object.entries(bets);
+  document.getElementById('bsCnt').textContent=entries.length;
+  document.getElementById('bsEmpty').style.display=entries.length?'none':'block';
+  document.getElementById('bsFooter').style.display=entries.length?'block':'none';
+  let total=1, html='';
+  entries.forEach(([market,{pick,odd}])=>{
+    total*=odd;
+    html+=`<div class="bs-item">
+      <div class="bs-item-top"><span class="bs-item-match">${market}</span><button class="bs-item-remove" onclick="removeBet('${market.replace(/'/g,"\\'")}')">✕</button></div>
+      <div class="bs-item-pick"><span>${pick}</span><span class="bs-item-odd">${odd.toFixed(2)}</span></div>
+    </div>`;
+  });
+  document.getElementById('bsList').innerHTML=html;
+  document.getElementById('bsTotal').textContent=total.toFixed(2);
+}
+
+function removeBet(market){
+  delete bets[market];
+  document.querySelectorAll('.odd.sel,.odd.desel').forEach(b=>b.classList.remove('sel','desel'));
+  Object.keys(bets).forEach(m=>{
+    document.querySelectorAll('.odd').forEach(b=>{
+      if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(m)){b.classList.add('sel')}
+    });
+  });
+  renderBetslip();
+}
+
+function clearAll(){
+  bets={};
+  document.querySelectorAll('.odd').forEach(b=>b.classList.remove('sel','desel'));
+  renderBetslip();
+}
+
+function confirmBet(){
+  if(!user){showToast('Inicia sesión para apostar','error');openModal('login');return;}
+  showToast('✅ Apuesta confirmada','success');
+  clearAll();
+}
+
+// ── PREDICCIONES ──
+function selectPred(el, matchId){
+  const siblings=el.closest('.pred-options').querySelectorAll('.pred-option');
+  if(el.classList.contains('selected')){
+    el.classList.remove('selected');
+    delete selectedPreds[matchId];
+  } else {
+    siblings.forEach(s=>s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPreds[matchId]=el.querySelector('.pred-opt-name').textContent;
+  }
+}
+
+function setStake(inputId, val){
+  document.getElementById(inputId).value=val;
+}
+
+function placePred(matchId, matchName){
+  if(!user){showToast('Inicia sesión para predecir','error');openModal('login');return;}
+  if(!selectedPreds[matchId]){showToast('Selecciona un ganador primero','error');return;}
+  const stakeEl=document.getElementById('stake-'+matchId);
+  const stake=parseInt(stakeEl.value)||0;
+  if(stake<10){showToast('Mínimo 10 monedas','error');return;}
+  const coins=parseInt(document.getElementById('predCoins').textContent);
+  if(stake>coins){showToast('No tienes suficientes monedas','error');return;}
+  const newCoins=coins-stake;
+  document.getElementById('predCoins').textContent=newCoins;
+  document.getElementById('navCoins').textContent=newCoins;
+  showToast(`🪙 Predicción enviada: ${selectedPreds[matchId]} — ${stake} monedas`,'success');
+  stakeEl.value='';
+}
+
+// ── AUTH ──
+function openModal(type){
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modalLogin').style.display=type==='login'?'block':'none';
+  document.getElementById('modalRegister').style.display=type==='register'?'block':'none';
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal()}
+
+function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  if(!email||!pass){showToast('Rellena todos los campos','error');return;}
+  const username=email.split('@')[0];
+  loginUser(username,1000);
+  closeModal();
+  showToast('¡Bienvenido de nuevo, '+username+'!','success');
+}
+
+function doRegister(){
+  const username=document.getElementById('regUser').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const pass=document.getElementById('regPass').value;
+  if(!username||!email||!pass){showToast('Rellena todos los campos','error');return;}
+  if(pass.length<6){showToast('La contraseña debe tener al menos 6 caracteres','error');return;}
+  loginUser(username,1000);
+  closeModal();
+  showToast('🎉 Cuenta creada. ¡Tienes 1.000 monedas!','success');
+}
+
+function loginUser(username, coins){
+  user={username,coins};
+  document.getElementById('navAuth').style.display='none';
+  document.getElementById('navUser').style.display='flex';
+  document.getElementById('navUsername').textContent=username;
+  document.getElementById('navCoins').textContent=coins;
+  document.getElementById('predCoins').textContent=coins;
+}
+
+function logout(){
+  user=null;
+  document.getElementById('navAuth').style.display='flex';
+  document.getElementById('navUser').style.display='none';
+  showToast('Sesión cerrada','info');
+}
+
+// ── TOAST ──
+function showToast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+</script>
+
+
+</body></html>
