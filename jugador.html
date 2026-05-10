@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HitboxBets — Punk · Perfil de Jugador</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent: #e8ff47;
+    --accent2: #ff4757;
+    --accent3: #00d4ff;
+    --text: #f0f0f8;
+    --muted: #8888aa;
+    --card: #13131e;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; min-height:100vh; }
+
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity:0.4;
+  }
+
+  nav {
+    position:sticky; top:0; z-index:100;
+    border-bottom:1px solid var(--border);
+    background:rgba(10,10,15,0.92);
+    backdrop-filter:blur(12px);
+    padding:0 2rem;
+    display:flex; align-items:center; gap:2rem; height:56px;
+  }
+  .logo { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; color:var(--accent); text-transform:uppercase; }
+  .logo span { color:var(--text); }
+  nav ul { display:flex; gap:0; list-style:none; }
+  nav ul li a {
+    display:block; padding:0 1rem; line-height:55px;
+    font-size:13px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--muted); text-decoration:none; border-bottom:2px solid transparent;
+    transition:color .2s, border-color .2s;
+  }
+  nav ul li a:hover { color:var(--text); border-bottom-color:var(--accent); }
+  .nav-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .btn-ghost { padding:6px 14px; border:1px solid var(--border2); border-radius:4px; font-size:12px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); cursor:pointer; background:transparent; }
+  .btn-accent { padding:6px 16px; border-radius:4px; font-size:12px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:#000; background:var(--accent); border:none; cursor:pointer; }
+
+  main { max-width:1100px; margin:0 auto; padding:2rem; position:relative; z-index:1; }
+
+  /* BREADCRUMB */
+  .breadcrumb { font-size:12px; color:var(--muted); margin-bottom:1.5rem; }
+  .breadcrumb a { color:var(--muted); text-decoration:none; }
+  .breadcrumb a:hover { color:var(--accent); }
+  .breadcrumb span { margin:0 6px; }
+
+  /* HERO */
+  .hero {
+    background:var(--card); border:1px solid var(--border); border-radius:8px;
+    padding:2rem; margin-bottom:1.5rem;
+    display:grid; grid-template-columns:auto 1fr auto; gap:2rem; align-items:center;
+  }
+  .player-avatar-big {
+    width:90px; height:90px; border-radius:8px;
+    background:linear-gradient(135deg, rgba(0,212,255,0.2), rgba(232,255,71,0.1));
+    border:2px solid rgba(0,212,255,0.3);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed',sans-serif; font-size:36px; font-weight:900;
+    color:var(--accent3);
+  }
+  .player-main-name {
+    font-family:'Barlow Condensed',sans-serif;
+    font-size:48px; font-weight:900; text-transform:uppercase; letter-spacing:-2px;
+    line-height:1; margin-bottom:4px;
+  }
+  .player-real-name { font-size:14px; color:var(--muted); margin-bottom:10px; }
+  .player-tags { display:flex; gap:8px; flex-wrap:wrap; }
+  .tag {
+    display:inline-block; padding:3px 10px; border-radius:3px;
+    font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .tag-sf6 { background:rgba(255,71,87,0.12); color:#ff6b7a; border:1px solid rgba(255,71,87,0.2); }
+  .tag-us { background:rgba(255,255,255,0.06); color:var(--muted); border:1px solid var(--border2); }
+  .tag-pro { background:rgba(232,255,71,0.1); color:var(--accent); border:1px solid rgba(232,255,71,0.2); }
+  .hero-stats { display:flex; flex-direction:column; gap:8px; align-items:flex-end; }
+  .hero-stat-val { font-family:'Barlow Condensed',sans-serif; font-size:32px; font-weight:900; line-height:1; }
+  .hero-stat-label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+  .rank-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(232,255,71,0.1); border:1px solid rgba(232,255,71,0.25);
+    border-radius:4px; padding:6px 12px;
+  }
+  .rank-num { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:900; color:var(--accent); }
+  .rank-label { font-size:11px; color:var(--muted); font-weight:600; }
+
+  /* STAT CARDS */
+  .stat-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:1.5rem; }
+  .stat-card {
+    background:var(--card); border:1px solid var(--border); border-radius:8px;
+    padding:1rem; text-align:center;
+  }
+  .stat-card-val { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:900; line-height:1; margin-bottom:4px; }
+  .stat-card-label { font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; }
+  .green { color:#4ade80; }
+  .yellow { color:var(--accent); }
+  .blue { color:var(--accent3); }
+  .red { color:var(--accent2); }
+
+  /* MAIN GRID */
+  .main-grid { display:grid; grid-template-columns:1fr 360px; gap:16px; }
+
+  .panel { background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:14px; }
+  .panel-header { padding:14px 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .panel-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; text-transform:uppercase; letter-spacing:-0.3px; }
+  .panel-sub { font-size:11px; color:var(--muted); }
+
+  /* CHARACTER BREAKDOWN */
+  .char-row { padding:12px 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; }
+  .char-row:last-child { border-bottom:none; }
+  .char-icon {
+    width:40px; height:40px; border-radius:5px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+  }
+  .char-name { font-size:14px; font-weight:700; margin-bottom:2px; }
+  .char-usage { font-size:11px; color:var(--muted); }
+  .char-bar-wrap { flex:1; }
+  .char-bar-track { height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-top:4px; }
+  .char-bar-fill { height:100%; border-radius:3px; transition:width .4s ease; }
+  .char-wr { font-size:14px; font-weight:700; min-width:40px; text-align:right; }
+
+  /* MATCH HISTORY */
+  .match-row { padding:10px 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  .match-row:last-child { border-bottom:none; }
+  .match-result {
+    width:28px; height:28px; border-radius:4px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:800;
+  }
+  .win { background:rgba(74,222,128,0.15); color:#4ade80; }
+  .loss { background:rgba(255,71,87,0.15); color:var(--accent2); }
+  .match-info { flex:1; min-width:0; }
+  .match-opp { font-size:13px; font-weight:600; }
+  .match-detail { font-size:11px; color:var(--muted); }
+  .match-score { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; min-width:36px; text-align:right; }
+  .match-event { font-size:10px; color:var(--muted); text-align:right; min-width:70px; }
+
+  /* ODDS PANEL */
+  .odds-panel-row { padding:12px 1.2rem; border-bottom:1px solid var(--border); }
+  .odds-panel-row:last-child { border-bottom:none; }
+  .odds-match { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .odds-event { font-size:11px; color:var(--muted); margin-bottom:8px; }
+  .odds-btns { display:flex; gap:6px; }
+  .odd-mini {
+    flex:1; padding:6px 4px; border:1px solid var(--border2); border-radius:4px;
+    text-align:center; cursor:pointer; transition:all .15s; background:transparent;
+  }
+  .odd-mini:hover { border-color:var(--accent); background:rgba(232,255,71,0.06); }
+  .odd-mini-label { font-size:10px; color:var(--muted); display:block; margin-bottom:1px; }
+  .odd-mini-val { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:900; color:var(--accent); display:block; }
+
+  /* HEATMAP */
+  .heatmap-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:4px; padding:1rem 1.2rem; }
+  .heatmap-cell {
+    aspect-ratio:1; border-radius:3px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:700; color:transparent;
+    transition:color .15s;
+  }
+  .heatmap-cell:hover { color:var(--text); }
+  .h0 { background:rgba(255,255,255,0.04); }
+  .h1 { background:rgba(232,255,71,0.15); }
+  .h2 { background:rgba(232,255,71,0.30); }
+  .h3 { background:rgba(232,255,71,0.50); }
+  .h4 { background:rgba(232,255,71,0.75); }
+
+  .tournament-row { padding:10px 1.2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+  .tournament-row:last-child { border-bottom:none; }
+  .t-placement {
+    font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900;
+    min-width:36px; text-align:center;
+  }
+  .t1 { color:var(--accent); }
+  .t2 { color:#aaa; }
+  .t3 { color:#cd7f32; }
+  .tn { color:var(--muted); }
+  .t-info { flex:1; }
+  .t-name { font-size:13px; font-weight:600; }
+  .t-date { font-size:11px; color:var(--muted); }
+  .t-prize { font-size:13px; font-weight:700; color:var(--accent); }
+
+  @media(max-width:900px) {
+    .hero { grid-template-columns:auto 1fr; }
+    .hero-stats { display:none; }
+    .stat-grid { grid-template-columns:repeat(3,1fr); }
+    .main-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Hitbox<span>Bets</span></div>
+  <ul>
+    <li><a href="index.html">En vivo</a></li>
+    <li><a href="#">Torneos</a></li>
+    <li><a href="#" style="color:var(--text); border-bottom:2px solid var(--accent);">Jugadores</a></li>
+    <li><a href="#">Ranking</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost">Iniciar sesión</button>
+    <button class="btn-accent">Registrarse gratis</button>
+  </div>
+</nav>
+
+<main>
+
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a><span>›</span>
+    <a href="#">Jugadores</a><span>›</span>
+    <a href="#">Street Fighter 6</a><span>›</span>
+    Punk
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="player-avatar-big">PK</div>
+    <div>
+      <div class="player-main-name">Punk</div>
+      <div class="player-real-name">Victor Woodley · 23 años · Los Angeles, EE.UU.</div>
+      <div class="player-tags">
+        <span class="tag tag-sf6">Street Fighter 6</span>
+        <span class="tag tag-us">🇺🇸 EE.UU.</span>
+        <span class="tag tag-pro">Pro Player</span>
+        <span class="tag" style="background:rgba(74,222,128,0.1); color:#4ade80; border:1px solid rgba(74,222,128,0.2);">Top 10 mundial</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="rank-badge">
+        <div>
+          <div class="rank-num">#3</div>
+          <div class="rank-label">Ranking SF6</div>
+        </div>
+      </div>
+      <div style="text-align:right; margin-top:4px;">
+        <div class="hero-stat-val yellow">$48.200</div>
+        <div class="hero-stat-label">Ganancias 2025</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-card-val green">74%</div>
+      <div class="stat-card-label">Win rate global</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val yellow">12</div>
+      <div class="stat-card-label">Torneos top 8</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val blue">3.2</div>
+      <div class="stat-card-label">Sets/torneo media</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val" style="color:#b47fff;">Luke</div>
+      <div class="stat-card-label">Main character</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-val green">68%</div>
+      <div class="stat-card-label">Perfect rounds</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+
+      <!-- CHARACTER BREAKDOWN -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Personajes usados</span>
+          <span class="panel-sub">Temporada 2025</span>
+        </div>
+        <div class="char-row">
+          <div class="char-icon" style="background:rgba(140,71,255,0.15); font-size:22px;">⚡</div>
+          <div class="char-bar-wrap">
+            <div class="char-name">Luke</div>
+            <div class="char-usage">62 sets jugados · Main</div>
+            <div class="char-bar-track"><div class="char-bar-fill" style="width:82%; background:var(--accent);"></div></div>
+          </div>
+          <div class="char-wr green">79%</div>
+        </div>
+        <div class="char-row">
+          <div class="char-icon" style="background:rgba(0,212,255,0.1); font-size:22px;">🌊</div>
+          <div class="char-bar-wrap">
+            <div class="char-name">Guile</div>
+            <div class="char-usage">14 sets jugados · Secondary</div>
+            <div class="char-bar-track"><div class="char-bar-fill" style="width:58%; background:var(--accent3);"></div></div>
+          </div>
+          <div class="char-wr blue">64%</div>
+        </div>
+        <div class="char-row">
+          <div class="char-icon" style="background:rgba(255,71,87,0.1); font-size:22px;">🔥</div>
+          <div class="char-bar-wrap">
+            <div class="char-name">Ken</div>
+            <div class="char-usage">8 sets jugados · Ocasional</div>
+            <div class="char-bar-track"><div class="char-bar-fill" style="width:35%; background:var(--accent2);"></div></div>
+          </div>
+          <div class="char-wr red">50%</div>
+        </div>
+      </div>
+
+      <!-- MATCH HISTORY -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Historial reciente</span>
+          <span class="panel-sub">Últimos 10 sets</span>
+        </div>
+        <div class="match-row">
+          <div class="match-result win">W</div>
+          <div class="match-info">
+            <div class="match-opp">vs. MenaRD</div>
+            <div class="match-detail">Luke vs. Blanka · EVO 2025 Top 8</div>
+          </div>
+          <div class="match-score green">3-1</div>
+          <div class="match-event">Hoy</div>
+        </div>
+        <div class="match-row">
+          <div class="match-result win">W</div>
+          <div class="match-info">
+            <div class="match-opp">vs. Tokido</div>
+            <div class="match-detail">Luke vs. Akuma · EVO 2025 Top 16</div>
+          </div>
+          <div class="match-score green">3-0</div>
+          <div class="match-event">Hoy</div>
+        </div>
+        <div class="match-row">
+          <div class="match-result loss">L</div>
+          <div class="match-info">
+            <div class="match-opp">vs. Caba</div>
+            <div class="match-detail">Luke vs. JP · CEO 2025 Grand Final</div>
+          </div>
+          <div class="match-score red">1-3</div>
+          <div class="match-event">28 Jun</div>
+        </div>
+        <div class="match-row">
+          <div class="match-result win">W</div>
+          <div class="match-info">
+            <div class="match-opp">vs. NuckleDu</div>
+            <div class="match-detail">Luke vs. Guile · CEO 2025 Top 4</div>
+          </div>
+          <div class="match-score green">3-2</div>
+          <div class="match-event">28 Jun</div>
+        </div>
+        <div class="match-row">
+          <div class="match-result win">W</div>
+          <div class="match-info">
+            <div class="match-opp">vs. iDom</div>
+            <div class="match-detail">Luke vs. Cammy · VSFighting Top 8</div>
+          </div>
+          <div class="match-score green">3-1</div>
+          <div class="match-event">14 Jun</div>
+        </div>
+        <div class="match-row">
+          <div class="match-result loss">L</div>
+          <div class="match-info">
+            <div class="match-opp">vs. Xiao Hai</div>
+            <div class="match-detail">Luke vs. Luke · Capcom Cup QF</div>
+          </div>
+          <div class="match-score red">0-3</div>
+          <div class="match-event">2 Jun</div>
+        </div>
+      </div>
+
+      <!-- ACTIVIDAD -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Actividad competitiva</span>
+          <span class="panel-sub">Últimos 64 torneos</span>
+        </div>
+        <div class="heatmap-grid">
+          <div class="heatmap-cell h0"></div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h3">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h1">T</div>
+          <div class="heatmap-cell h2">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h4">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h0"></div>
+          <div class="heatmap-cell h0"></div><div class="heatmap-cell h3">T</div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h4">T</div>
+          <div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h3">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div>
+          <div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h4">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h3">T</div>
+          <div class="heatmap-cell h2">T</div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h3">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h0"></div>
+          <div class="heatmap-cell h0"></div><div class="heatmap-cell h4">T</div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div>
+          <div class="heatmap-cell h3">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h2">T</div><div class="heatmap-cell h1">T</div><div class="heatmap-cell h0"></div><div class="heatmap-cell h0"></div><div class="heatmap-cell h4">T</div><div class="heatmap-cell h0"></div>
+        </div>
+        <div style="padding:0 1.2rem 1rem; display:flex; gap:16px; font-size:11px; color:var(--muted);">
+          <span>Menos activo</span>
+          <span style="display:flex; gap:3px; align-items:center;">
+            <span style="width:12px;height:12px;border-radius:2px;background:rgba(232,255,71,0.15);display:inline-block;"></span>
+            <span style="width:12px;height:12px;border-radius:2px;background:rgba(232,255,71,0.35);display:inline-block;"></span>
+            <span style="width:12px;height:12px;border-radius:2px;background:rgba(232,255,71,0.55);display:inline-block;"></span>
+            <span style="width:12px;height:12px;border-radius:2px;background:rgba(232,255,71,0.8);display:inline-block;"></span>
+          </span>
+          <span>Más activo</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+
+      <!-- PRÓXIMOS MATCHES CON CUOTAS -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Próximos matches</span>
+          <span class="panel-sub" style="color:var(--accent2);">● EVO 2025</span>
+        </div>
+        <div class="odds-panel-row">
+          <div class="odds-match">Punk vs. Tokido</div>
+          <div class="odds-event">EVO 2025 SF6 · Grand Final · Hoy 21:00</div>
+          <div class="odds-btns">
+            <button class="odd-mini" onclick="this.style.borderColor='var(--accent)'">
+              <span class="odd-mini-label">Punk gana</span>
+              <span class="odd-mini-val">1.70</span>
+            </button>
+            <button class="odd-mini" onclick="this.style.borderColor='var(--accent)'">
+              <span class="odd-mini-label">Tokido gana</span>
+              <span class="odd-mini-val">2.15</span>
+            </button>
+          </div>
+        </div>
+        <div class="odds-panel-row">
+          <div class="odds-match">Punk vs. Caba</div>
+          <div class="odds-event">CEO 2025 SF6 · Top 4 · 2 Jul</div>
+          <div class="odds-btns">
+            <button class="odd-mini" onclick="this.style.borderColor='var(--accent)'">
+              <span class="odd-mini-label">Punk gana</span>
+              <span class="odd-mini-val">1.55</span>
+            </button>
+            <button class="odd-mini" onclick="this.style.borderColor='var(--accent)'">
+              <span class="odd-mini-label">Caba gana</span>
+              <span class="odd-mini-val">2.45</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORIAL DE TORNEOS -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Torneos 2025</span>
+          <span class="panel-sub">8 eventos</span>
+        </div>
+        <div class="tournament-row">
+          <div class="t-placement t1">🥇</div>
+          <div class="t-info">
+            <div class="t-name">VSFighting 2025</div>
+            <div class="t-date">Birmingham · Jun 2025</div>
+          </div>
+          <div class="t-prize">$5.000</div>
+        </div>
+        <div class="tournament-row">
+          <div class="t-placement t2">2°</div>
+          <div class="t-info">
+            <div class="t-name">CEO 2025</div>
+            <div class="t-date">Orlando · Jun 2025</div>
+          </div>
+          <div class="t-prize">$3.200</div>
+        </div>
+        <div class="tournament-row">
+          <div class="t-placement t1">🥇</div>
+          <div class="t-info">
+            <div class="t-name">Combo Breaker 2025</div>
+            <div class="t-date">Chicago · May 2025</div>
+          </div>
+          <div class="t-prize">$8.000</div>
+        </div>
+        <div class="tournament-row">
+          <div class="t-placement t3">3°</div>
+          <div class="t-info">
+            <div class="t-name">Capcom Cup XII</div>
+            <div class="t-date">Las Vegas · Abr 2025</div>
+          </div>
+          <div class="t-prize">$12.000</div>
+        </div>
+        <div class="tournament-row">
+          <div class="t-placement tn">5°</div>
+          <div class="t-info">
+            <div class="t-name">EVO Japan 2025</div>
+            <div class="t-date">Tokio · May 2025</div>
+          </div>
+          <div class="t-prize">$4.800</div>
+        </div>
+      </div>
+
+      <!-- MATCHUPS -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Matchups clave</span>
+          <span class="panel-sub">Win rate vs. top players</span>
+        </div>
+        <div style="padding:1rem 1.2rem; display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; min-width:80px; color:var(--muted);">vs. MenaRD</span>
+            <div style="flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+              <div style="width:70%; height:100%; background:var(--accent); border-radius:3px;"></div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:var(--accent); min-width:32px; text-align:right;">70%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; min-width:80px; color:var(--muted);">vs. Tokido</span>
+            <div style="flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+              <div style="width:55%; height:100%; background:var(--accent3); border-radius:3px;"></div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:var(--accent3); min-width:32px; text-align:right;">55%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; min-width:80px; color:var(--muted);">vs. Caba</span>
+            <div style="flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+              <div style="width:42%; height:100%; background:var(--accent2); border-radius:3px;"></div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:var(--accent2); min-width:32px; text-align:right;">42%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; min-width:80px; color:var(--muted);">vs. NuckleDu</span>
+            <div style="flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+              <div style="width:65%; height:100%; background:var(--accent); border-radius:3px;"></div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:var(--accent); min-width:32px; text-align:right;">65%</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:12px; min-width:80px; color:var(--muted);">vs. Xiao Hai</span>
+            <div style="flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
+              <div style="width:38%; height:100%; background:var(--accent2); border-radius:3px;"></div>
+            </div>
+            <span style="font-size:12px; font-weight:700; color:var(--accent2); min-width:32px; text-align:right;">38%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
